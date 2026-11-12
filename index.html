@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Six Suns GP Test</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;800&family=Inter:wght@400;600&display=swap">
+<style>
+/* Six Suns GP's own look: deep space, a warm sun-gold, the player's pink. One calm column a first-timer can follow on a phone. */
+:root{
+  --bg:#06051A; --fg:#F2EEFF; --muted:#A9A3C8; --line:#25204A; --card:#100D2C;
+  --gold:#FFB938; --pink:#FF5FA2; --warn-bg:#2A1A10; --warn-line:#6A4420;
+  --display:'Exo 2','Futura',sans-serif; --body:'Inter',system-ui,sans-serif;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{--bg:#FBF8FF;--fg:#15112E;--muted:#5A5480;--line:#E2DCF4;--card:#FFFFFF;--warn-bg:#FFF4E6;--warn-line:#F2C996;color-scheme:light}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#FBF8FF;--fg:#15112E;--muted:#5A5480;--line:#E2DCF4;--card:#FFFFFF;--warn-bg:#FFF4E6;--warn-line:#F2C996;color-scheme:light}}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:17px/1.6 var(--body);margin:0}
+img{max-width:100%}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,.ui{font-family:var(--display)}
+h2{font-size:1.5rem;line-height:1.15;margin:0 0 .6rem;font-weight:800;letter-spacing:.02em}
+p{margin:0 0 .9rem}
+section{padding-block:2rem;border-top:1px solid var(--line)}
+body:not(.es-on) .es{display:none!important}
+body.es-on .en{display:none!important}
+.hero{background:radial-gradient(120% 90% at 85% 10%,#3A1B08 0%,#140A2E 45%,#05040F 100%);color:#F2EEFF;padding-block:1.2rem 2.4rem;overflow:hidden;position:relative}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,#FFE29A 0%,#FFB938 35%,rgba(255,120,30,.25) 60%,transparent 72%);pointer-events:none}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.6rem;position:relative;z-index:1}
+.eyebrow{font:600 .72rem var(--display);letter-spacing:.22em;text-transform:uppercase;color:#C9C2EA}
+.lang{display:flex;border:1px solid #4A3F80;border-radius:999px;overflow:hidden}
+.lang button{font:600 .8rem var(--display);background:transparent;color:#C9C2EA;border:0;padding:.4rem .8rem;min-height:36px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:#F2EEFF;color:#140A2E}
+.hero h1{font-size:clamp(2.6rem,11vw,4.2rem);line-height:.95;margin:0 0 .6rem;font-weight:800;letter-spacing:.01em;position:relative;z-index:1}
+.hero .sub{font-size:1.2rem;line-height:1.35;margin:0 0 1rem;position:relative;z-index:1}
+.facts{font:.85rem var(--display);color:#C9C2EA;margin:0;position:relative;z-index:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--gold);color:#1A0E03;font:800 1.05rem var(--display);padding:.9rem 1.4rem;border-radius:12px;text-decoration:none;min-height:48px}
+.btn:focus-visible,.lang button:focus-visible,a:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.deal{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;padding:1.1rem 1.2rem}
+ol.list{margin:.4rem 0 0;padding-left:1.3rem}ol.list li,ul.list li{margin:.35rem 0}
+ul.list{margin:.4rem 0 0;padding-left:1.2rem}
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:1rem 0 0;display:grid;gap:.9rem}
+ol.steps>li{counter-increment:s;display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;align-items:start}
+ol.steps>li::before{content:counter(s);font:800 1rem var(--display);width:2.2rem;height:2.2rem;border-radius:50%;background:var(--pink);color:#fff;display:grid;place-items:center}
+ol.steps>li>div{min-width:0}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:10px;padding:.55rem .8rem;margin:.5rem 0 0;font-size:.92rem}
+.shot{display:block;max-width:230px;border-radius:16px;border:3px solid var(--line);margin-top:.6rem}
+code{font:600 .95em var(--display);color:var(--gold)}
+footer{padding-block:1.6rem 2.4rem;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="top"><span class="eyebrow">Kithe · VIP Circle</span>
+    <div class="lang" role="group" aria-label="Language"><button id="b-en" aria-pressed="true">EN</button><button id="b-es" aria-pressed="false">ES</button></div></div>
+  <h1>Six Suns GP</h1>
+  <p class="sub en">Race spaceships on a glowing track floating in your room.</p>
+  <p class="sub es">Carreras de naves en una pista luminosa que flota en tu cuarto.</p>
+  <p class="facts en">Private test · version 0.38 · Android 10 or newer · about 5 minutes</p>
+  <p class="facts es">Prueba privada · versión 0.38 · Android 10 o más nuevo · unos 5 minutos</p>
+</div></header>
+
+<main class="wrap">
+<section>
+  <h2 class="en">The deal</h2><h2 class="es">El trato</h2>
+  <div class="deal">
+    <ol class="list en">
+      <li>Race on <b>15 different days</b>. They don't need to be in a row. Any race counts: Grand Prix, practice, racing together.</li>
+      <li>Once, send your opinion: <b>TELL US WHAT YOU THINK</b> on the app's Home.</li>
+    </ol>
+    <ol class="list es">
+      <li>Corre en <b>15 días distintos</b>. No tienen que ser seguidos. Cuenta cualquier carrera: Gran Premio, práctica, carreras juntos.</li>
+      <li>Una vez, envía tu opinión: <b>TELL US WHAT YOU THINK</b> en el Inicio de la app.</li>
+    </ol>
+    <p class="en" style="margin:.7rem 0 0">You get: the finished Six Suns GP, yours, free. Home shows your count: <b>Test days</b>.</p>
+    <p class="es" style="margin:.7rem 0 0">Recibes: Six Suns GP terminado, tuyo, gratis. El Inicio muestra tu cuenta: <b>Test days</b>.</p>
+  </div>
+</section>
+
+<section>
+  <h2 class="en">You need</h2><h2 class="es">Necesitas</h2>
+  <ul class="list en">
+    <li>An <b>Android</b> phone (no iPhone). For racing in your room, a phone with Google's AR. Without it you race on the screen.</li>
+    <li>The Gmail you gave us.</li>
+    <li>Your code from WhatsApp, like <code>SG-7KQ3P</code>.</li>
+  </ul>
+  <ul class="list es">
+    <li>Un teléfono <b>Android</b> (no iPhone). Para correr en tu cuarto, un teléfono con la RA de Google. Sin ella corres en la pantalla.</li>
+    <li>El Gmail que nos diste.</li>
+    <li>Tu código del WhatsApp, como <code>SG-7KQ3P</code>.</li>
+  </ul>
+</section>
+
+<section>
+  <h2 class="en">Install</h2><h2 class="es">Instala</h2>
+  <ol class="steps">
+    <li><div>
+      <p class="en">Tap the button. Drive opens.</p><p class="es">Toca el botón. Se abre Drive.</p>
+      <a class="btn" href="https://drive.google.com/drive/folders/1ImkgJpRD4IEWAUNmAuj1WJrFqBs9oRnF"><span class="en">Open the folder</span><span class="es">Abrir la carpeta</span></a>
+      <p class="warn en">"You need access"? Switch to the Gmail you gave us (top right).</p>
+      <p class="warn es">¿Dice "Necesitas acceso"? Cambia al Gmail que nos diste (arriba a la derecha).</p>
+    </div></li>
+    <li><div>
+      <p class="en">Next to the file starting with <b>SixSunsGP-Test</b> tap ⋮ › <b>Download</b>.</p>
+      <p class="es">Junto al archivo que empieza con <b>SixSunsGP-Test</b> toca ⋮ › <b>Descargar</b>.</p>
+    </div></li>
+    <li><div>
+      <p class="en">Open <b>Files</b> › <b>Downloads</b> › tap the file.</p><p class="es">Abre <b>Archivos</b> › <b>Descargas</b> › toca el archivo.</p>
+      <img class="shot" src="img/03-files-downloads.jpg" alt="Files app, Downloads">
+      <p class="warn en">"Not allowed to install unknown apps"? Tap <b>Settings</b> › turn on <b>Allow from this source</b> › go back.</p>
+      <p class="warn es">¿Dice que no puede instalar apps desconocidas? Toca <b>Configuración</b> › activa <b>Confiar en esta fuente</b> › regresa.</p>
+      <img class="shot" src="img/05-allow-from-this-source-off.jpg" alt="Allow from this source switch">
+      <p class="warn en">Red "Danger" page (Xiaomi, POCO, Redmi)? Tick the box › wait › <b>OK</b>.</p>
+      <p class="warn es">¿Página roja de "Peligro" (Xiaomi, POCO, Redmi)? Marca la casilla › espera › <b>Aceptar</b>.</p>
+    </div></li>
+    <li><div>
+      <p class="en">Tap <b>Install</b>.</p><p class="es">Toca <b>Instalar</b>.</p>
+      <p class="warn en">"App blocked" by Play Protect? Tap <b>More details</b> › <b>Install anyway</b>. If there is no such button: Play Store › your photo › Play Protect › ⚙ › turn off <b>Scan apps</b>, install, then turn it back on.</p>
+      <p class="warn es">¿Play Protect dice "App bloqueada"? Toca <b>Más detalles</b> › <b>Instalar de todas formas</b>. Si no aparece: Play Store › tu foto › Play Protect › ⚙ › desactiva <b>Analizar apps</b>, instala, y vuelve a activarlo.</p>
+    </div></li>
+    <li><div><p class="en">Tap <b>Open</b>.</p><p class="es">Toca <b>Abrir</b>.</p></div></li>
+  </ol>
+</section>
+
+<section>
+  <h2 class="en">Then, in Six Suns GP</h2><h2 class="es">Después, en Six Suns GP</h2>
+  <ol class="steps">
+    <li><div><p class="en">Type your code › <b>ENTER</b> › read what the test sends › <b>I AGREE</b>.</p>
+      <p class="es">Escribe tu código › <b>ENTER</b> › lee lo que envía la prueba › <b>I AGREE</b>.</p></div></li>
+    <li><div><p class="en">Tap <b>RACE · GRAND PRIX</b>. The first race asks for the camera: allow it to race in your room.</p>
+      <p class="es">Toca <b>RACE · GRAND PRIX</b>. La primera carrera pide la cámara: permítela para correr en tu cuarto.</p></div></li>
+    <li><div><p class="en">A new version? Home shows <b>NEW VERSION · UPDATE</b>. Tap it. Your Grand Prix stays.</p>
+      <p class="es">¿Versión nueva? El Inicio muestra <b>NEW VERSION · UPDATE</b>. Tócalo. Tu Gran Premio se queda.</p></div></li>
+  </ol>
+  <p class="en" style="margin-top:1.2rem">Stuck? Write on WhatsApp to the person who invited you.</p>
+  <p class="es" style="margin-top:1.2rem">¿Atorado? Escribe por WhatsApp a quien te invitó.</p>
+</section>
+</main>
+<footer><div class="wrap">
+  <p class="en">Six Suns GP, made by Kithe. Private test, version 0.38. Thank you for racing.</p>
+  <p class="es">Six Suns GP, hecho por Kithe. Prueba privada, versión 0.38. Gracias por correr.</p>
+</div></footer>
+<script>
+(function(){
+  var b=document.body,en=document.getElementById('b-en'),es=document.getElementById('b-es');
+  function set(l){b.classList.toggle('es-on',l==='es');en.setAttribute('aria-pressed',l!=='es');es.setAttribute('aria-pressed',l==='es');document.documentElement.lang=l;try{localStorage.setItem('lang',l)}catch(e){}}
+  en.onclick=function(){set('en')};es.onclick=function(){set('es')};
+  var s=null;try{s=localStorage.getItem('lang')}catch(e){}
+  set(s||((navigator.language||'').slice(0,2)==='es'?'es':'en'));
+})();
+</script>
+</body>
+</html>
